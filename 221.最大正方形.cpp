@@ -47,3 +47,24 @@ int maximalSquare(vector<vector<char>>& matrix) {
 	}
 	return maxSize;
 }
+
+（2）这题就应该是用动态规划去写，构造一个dp数组为vector<vector<int>> dp(matrix.size() + 1, vector<int>(matrix[0].size() + 1, 0));
+这题比较难想的是递推公式dp[i][j]的值为dp[i-1][j-1]、dp[i-1][j]、dp[i][j-1]的最小值加1，本来我想的是与dp[i-1][j-1]有关，再判断其他在正方形
+边界上的值，但是判断dp[i-1][j-1]、dp[i-1][j]、dp[i][j-1]明显更加简便，结果也正确。（注意这个地推公式）
+int maximalSquare(vector<vector<char>>& matrix) {
+	if (matrix.empty() || matrix[0].empty())
+		return 0;
+	vector<vector<int>> dp(matrix.size() + 1, vector<int>(matrix[0].size() + 1, 0));
+	int maxSize = 0;
+	for (int i = 1; i <= matrix.size(); ++i) {
+		for (int j = 1; j <= matrix[0].size(); ++j) {
+			if (matrix[i - 1][j - 1] == '0')
+				dp[i][j] = 0;
+			else
+				dp[i][j] = min(dp[i - 1][j], min(dp[i - 1][j - 1], dp[i][j - 1])) + 1;
+			if (dp[i][j] > maxSize)
+				maxSize = dp[i][j];
+		}
+	}
+	return maxSize * maxSize;
+}
