@@ -15,6 +15,7 @@
 解题：
 (1)暴力求解，在拿到题目后，想了几分钟，没有想到好的办法，就采用暴力求解的办法，依此对数组中每一个数字进行遍历，求得每一个数字所对应的正方形的最大，
 然后用一个最大值变量保存算得的最大值。
+```cpp
 int judgeSize(vector<vector<char>>& matrix, int row, int col) {
 	if (matrix[row][col] - '0' == 0)
 		return 0;
@@ -46,3 +47,4 @@ int maximalSquare(vector<vector<char>>& matrix) {
 	}
 	return maxSize;
 }
+```
