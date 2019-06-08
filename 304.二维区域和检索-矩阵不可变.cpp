@@ -23,7 +23,7 @@ sumRegion(1, 2, 2, 4) -> 12
 你可以假设 row1 ≤ row2 且 col1 ≤ col2。
 
 解题：
-（1）拿到这一题第一个思路就是直接遍历，直接暴力求解，暴力求解的程序如图：
+（1）拿到这一题第一个思路就是直接遍历，直接暴力求解，暴力求解的程序如图（时间复杂度太大，通过不了）：
 class NumMatrix {
 public:
 	NumMatrix(vector<vector<int>>& matrix) {
@@ -52,4 +52,26 @@ public:
 	}
 private:
 	vector<vector<int>> region;
+};
+
+（2）改进版，求出一个辅助数组dp[row+1][col+1],给辅助数组求和，求每一个dp[i][j]的值，取得时候直接取就ok(动态规划)
+class NumMatrix {
+public:
+	NumMatrix(vector<vector<int>>& matrix) {
+		if (matrix.empty() || matrix[0].empty())
+			return;
+		//取dp的大小比matrix的行列均大1，然后就不用判断i,j是否等于0；（注意vector的resize操作）
+		dp.resize(matrix.size()+1, vector<int>(matrix[0].size()+1, 0));
+		for (int i = 1; i <= matrix.size(); ++i) 
+			for (int j = 1; j <= matrix[0].size(); ++j)
+				//注意dp[i][j]的条件判断
+				dp[i][j] = dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1] + matrix[i-1][j-1];
+	}
+	int sumRegion(int row1, int col1, int row2, int col2) {
+		//注意这里的条件判断，画图清晰一点
+		return dp[row2 + 1][col2 + 1] - dp[row1][col2 + 1] - dp[row2 + 1][col1] + dp[row1][col1];
+	}
+
+private:
+	vector<vector<int>> dp;
 };
