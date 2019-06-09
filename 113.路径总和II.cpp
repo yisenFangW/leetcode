@@ -30,7 +30,8 @@ void path(TreeNode* node, int sum, int pathSum, vector<int> &out, vector<vector<
 	out.push_back(node->val);
 	if (pathSum == sum && !node->left && !node->right) {
 		res.push_back(out);
-    //注意这个地方为什么不能用return,用了return答案就有些不对
+		//这里不能return，因为out的pop_back()在后面，如果return掉了，node->val就不能被释放了。
+    		//注意这个地方为什么不能用return,用了return答案就有些不对
 		//return;
 	}
 	path(node->left, sum, pathSum, out, res);
