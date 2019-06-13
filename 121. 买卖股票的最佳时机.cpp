@@ -24,7 +24,7 @@ int maxProfit(vector<int>& prices) {
 	int buy = INT_MAX, profit = 0;
 	for (auto price : prices) {
 		buy = min(buy, price);
-		profit = (profit, price - buy);
+		profit = max(profit, price - buy);
 	}
 	return profit;
 }
