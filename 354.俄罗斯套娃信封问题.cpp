@@ -33,4 +33,31 @@ int maxEnvelopes(vector<vector<int>>& envelopes) {
 	return maxLen;
 }
 
-//2.更加快速的方法，暂时没有没有想到哇，看看别人写的思路
+//2.更加快速的方法，通过二分进行加速，首先要做的还是给信封排序，但是这次排序和上面有些不同，
+//信封的宽度还是从小到大排，但是宽度相等时，我们让高度大的在前面, 问题就简化了成了找高度数字中的最长连续子序列问题。
+int maxEnvelopes(vector<vector<int>>& envelopes) {
+	if (envelopes.empty() || envelopes[0].empty())
+		return 0;
+	sort(envelopes.begin(), envelopes.end(), [](const vector<int> &v1, const vector<int> &v2)
+		{if (v1.front() == v2.front()) return v1.back() > v2.back();
+			return v1.front() < v2.front(); });
+	vector<int> dp{envelopes[0].back()};
+	for (int i = 1; i < envelopes.size(); ++i) {
+		if (envelopes[i].back() < dp[0])
+			dp[0] = envelopes[i].back();
+		else if (envelopes[i].back() > dp.back())
+			dp.push_back(envelopes[i].back());
+		else {
+			int left = 0, right = dp.size() - 1;
+			while (left != right) {
+				int mid = left + (right - left) / 2;
+				if (envelopes[i].back() > dp[mid])
+					left = mid + 1;
+				else
+					right = mid;
+			}
+			dp[right] = envelopes[i].back();
+		}
+	}
+	return dp.size();
+}
