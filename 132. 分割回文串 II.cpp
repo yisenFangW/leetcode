@@ -39,3 +39,40 @@ int minCut(string s) {
   //return f[s.size()] - 1？？减一
 	return f[s.size()] - 1;
 }
+
+//2.修改后的1代码，不用再减一了，较为容易理解一点
+int minCut(string s) {
+	if (s.empty())
+		return 0;
+	vector<vector<bool>> dp(s.size(), vector<bool>(s.size(), false));
+	vector<int> f(s.size(), INT_MAX);
+	for (int i = 0; i < s.size(); ++i) {
+		judgePalindrome(s, i, i, dp);
+		judgePalindrome(s, i, i + 1, dp);
+	}
+	f[0] = 0;
+	for (int i = 0; i < s.size(); ++i) {
+		for (int j = 0; j <= i; ++j)
+			if (dp[j][i])
+				f[i] =(j == 0) ? 0 : min(f[i], f[j-1] + 1);
+	}
+	return f[s.size() - 1];
+}
+
+//3.参考别人写出来的更加精简的代码，将回文字符串的判断与动态规划方法进行结合，只有一个循环
+int minCut(string s) {
+	if (s.empty())
+		return 0;
+	vector<vector<bool>> p(s.size(), vector<bool>(s.size(), false));
+	vector<int> dp(s.size());
+	for (int i = 0; i < s.size(); ++i) {
+		dp[i] = i;
+		for (int j = 0; j <= i; ++j) {
+			if (s[i] == s[j] && (i - j < 2 || p[j + 1][i - 1])) {
+				p[j][i] = true;
+				dp[i] = (j == 0) ? 0 : min(dp[i], dp[j - 1] + 1);
+			}
+		}
+	}
+	return dp[s.size() - 1];
+}
