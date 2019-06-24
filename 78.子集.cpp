@@ -18,7 +18,7 @@
 ]
 
 解题：
-//一开始拿到这个题目，首先想到的还是递归的办法，但是运行总是超时，
+//1.一开始拿到这个题目，首先想到的还是递归的办法，但是运行总是超时，
 void sub(vector<int>& nums, int start, vector<int>& out, vector<vector<int>>& res) {
 	for (int i = start; i < nums.size(); ++i) {
 		out.push_back(nums[i]);
@@ -36,8 +36,8 @@ vector<vector<int>> subsets(vector<int>& nums) {
 	return res;
 }
 
-//飞递归的方法，在已有的每个数组后面加上新加入的数，首先传入一个[]，然后1的话[1],2的话有[],[1]变为[2],[1,2],3的话有[],[1],[2],[1,2]
-//将3加入到这些数组后面，变为[3],[1,3],[2,3],[1,2,3].（实现其实并不难，难的是在想到这种方法）
+//2.非递归的方法，在已有的每个数组后面加上新加入的数，首先传入一个[]，然后1的话是将[],[]->[],[1],2的话有[],[1]->[],[1],[2],[1,2]
+//3的话有[],[1],[2],[1,2]->[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]（实现其实并不难，难的是在想到这种方法）
 vector<vector<int>> subsets(vector<int>& nums) {
 	vector<vector<int>> res(1);
 	for (int i = 0; i < nums.size(); ++i) {
@@ -51,3 +51,23 @@ vector<vector<int>> subsets(vector<int>& nums) {
 	}
 	return res;
 }
+//3.位运算方法，判断哪个与i取&等于1，则取哪一个；
+//令nums中每一个数为1，然后all_set为最大个数[0~all_set-1];
+//若对应为取&能对应上，即将这个放入到vector中，最后等j的循环结束
+//将vector放入到vector<vector<int>>容器中
+vector<vector<int>> subsets2(vector<int>& nums) {
+	vector<vector<int>> res;
+	int all_set = 1 << nums.size();
+	for (int i = 0; i < all_set; ++i) {
+		vector<int> out;
+		for (int j = 0; j < nums.size(); ++j) {
+			if (i & 1 << j) {
+				out.push_back(nums[j]);
+			}
+		}
+		res.push_back(out);
+	}
+	return res;
+}
+
+
