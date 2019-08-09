@@ -16,12 +16,13 @@
 
 vector<int> productExceptSelf(vector<int>& nums) {
     if(nums.empty()) return {};
-    vector<int> lefRes(nums.size(), 1), rightRes(nums.size(), 1), res(nums.size(), 1);
+    vector<int> leftRes(nums.size(), 1), rightRes(nums.size(), 1), res(nums.size(), 1);
     for(int i=0;i<nums.size()-1;++i)
-        lefRes[i+1] = nums[i]*lefRes[i];
+        //leftRes[2]就是num[0]*num[1];
+        leftRes[i+1] = nums[i]*lefRes[i];
     for(int i = nums.size()-1;i>0;--i)
         rightRes[i-1] = rightRes[i]*nums[i];
     for(int i=0;i<nums.size();++i)
-        res[i] = lefRes[i]*rightRes[i];
+        res[i] = leftRes[i]*rightRes[i];
     return res;
 }
