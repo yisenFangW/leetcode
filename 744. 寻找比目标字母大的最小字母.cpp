@@ -59,7 +59,5 @@ char nextGreatestLetter(vector<char>& letters, char target) {
     return letters[0];
 }
 
-
-
-
+//2.判断target是否比数组最后一个数还要大，是则返回第一个；思路其实是一样的，就不贴代码啦
 
