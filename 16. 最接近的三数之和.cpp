@@ -7,6 +7,7 @@
 题解：
 //这题是找出与target最接近的三个数，首先那道题不是很清楚解题的思路，看了一下网上别人的解题方法，先将数组排序，然后确定一个数的位置
 //这个确定的数的位置，从左往右走，然后设置left和right指针，一共可以确定三个数的位置，最后记录下差值最小的一个数值；
+//i从0开始，left=i+1,right=nums.size()-1;用while循环的判断条件是left<right，又不一定是left要在i左边，right要在i右边嘛，都是可以灵活安排的；
 //重新写第二遍，思路还是不是很清晰，要注意看这题；
 
 int threeSumClosest(vector<int>& nums, int target) {
