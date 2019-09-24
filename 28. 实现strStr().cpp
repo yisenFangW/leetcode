@@ -19,6 +19,7 @@
 题解：
 //题目本身是一个很简单的题目，但是在写的过程中，有一些小细节需要注意，还有写的方式，如i只需便利到m-n即可，
 //剪枝操作，结果加速。
+//注意这个地方的剪枝加速过程
 int strStr(string haystack, string needle) {
 	if (needle.empty())
 		return 0;
