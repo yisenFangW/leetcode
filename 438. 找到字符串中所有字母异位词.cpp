@@ -94,3 +94,50 @@ vector<int> findAnagrams(string s, string p) {
     }
     return res;
 }
+
+//题解4.拿到题目之后第一想法是将p的内容存到一个hash表中，然后s从左往右运行，设置一个l和r，判断l和y之间的关系，如果差值等于p的长度
+//且l和r之间的每个数都在hash表中，且hash的数值大于1。这样就判断s中存在一个p，存下l的位置：
+vector<int> findAnagrams(string s, string p) {
+    unordered_map<char, int> m, temp;
+    vector<int> res;
+    int len = p.size();
+    for (auto i:p)
+        ++m[i];
+    for (int l = 0, r = 0; l < s.size() && r < s.size();) {
+        temp = m;
+        while (temp.count(s[r]) && --temp[s[r]] >= 0) {
+            if (len == r - l + 1) {
+                res.push_back(l);
+                break;
+            } else
+                ++r;
+        }
+        ++l;
+        r = l;
+    }
+    return res;
+}
+
+//题解5:自己实现的方法，速度比较慢，看了一下别人ace比较快的的代码，通过两个vector存hashs和hashp，对比是否相等，然后删掉hashs的左侧
+//加上右侧的内容，再次比较，这样会速度很快，不用s中的每个都要多次比较：
+vector<int> findAnagrams(string s, string p) {
+    if (s.size() < p.size())
+        return {};
+    vector<int> res;
+    int len = p.size();
+    vector<int> hashs(26, 0), hashp(26, 0);
+    for (int i = 0; i < len; ++i) {
+        ++hashs[s[i] - 'a'];
+        ++hashp[p[i] - 'a'];
+    }
+    for (int i = len; i < s.size(); ++i) {
+        if (hashs == hashp) {
+            res.push_back(i - len);
+        }
+        ++hashs[s[i] - 'a'];
+        --hashs[s[i - len] - 'a'];
+    }
+    if (hashs == hashp)
+        res.push_back(s.size() - len);
+    return res;
+}
