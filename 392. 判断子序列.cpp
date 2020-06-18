@@ -22,3 +22,30 @@ bool isSubsequence(string s, string t) {
     }
     return i == s.size();
 }
+
+//另一种思路：(转化一下思想，用上了二分法)
+//用一个vector<vector<int>> vec(26),存储小写字母的各个位置坐标；用一个tag存储开始到结束各自的位置，随着s的元素增长轮换；
+//当s开始遍历时，二分遍历dp[now][]，找到最小的坐标，将坐标赋给tag;
+bool isSubsequence(string s, string t) {
+    vector<vector<int>> dp(26);
+    int tag = -1;
+    for (int i = 0; i < t.size(); ++i)
+        dp[t[i] - 'a'].push_back(i);
+    for(int i=0;i<s.size();++i){
+        int now = s[i]-'a';
+        int left = 0, right = dp[now].size()-1;
+        while(left < right){
+            int mid = left + ((right-left) >> 1);
+            if(dp[now][mid] > tag)
+                right = mid;
+            else
+                left = mid + 1;
+        }
+        if(right < left || dp[now][left] <= tag)
+            return false;
+        tag = dp[now][left];
+    }
+    return true;
+}
+
+
